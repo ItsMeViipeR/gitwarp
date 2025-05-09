@@ -1,15 +1,16 @@
 use std::process::Command;
 
-pub fn clone(url: &str) -> Result<(), String> {
+fn git_exists() -> bool {
     let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
+    git.arg("--version").output().is_ok()
+}
 
-    if !git_exists {
+pub fn clone(url: &str) -> Result<(), String> {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("clone").arg(url);
     let output = git.output().map_err(|e| e.to_string())?;
 
@@ -36,22 +37,19 @@ pub fn clone(url: &str) -> Result<(), String> {
 }
 
 pub fn commit(msg: &str, all: bool, push: bool, files: Option<Vec<String>>) -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
+    let mut git = Command::new("git");
 
     if all {
         git.arg("add")
             .arg("--all")
             .output()
             .map_err(|e| e.to_string())?;
-    } else if files.is_some() {
-        for file in files.unwrap() {
+    } else if let Some(files) = files {
+        for file in files {
             git.arg("add")
                 .arg(file)
                 .output()
@@ -115,15 +113,11 @@ pub fn commit(msg: &str, all: bool, push: bool, files: Option<Vec<String>>) -> R
 }
 
 pub fn create_branch(name: &str) -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("branch").arg(name);
     let output = git.output().map_err(|e| e.to_string())?;
 
@@ -150,15 +144,11 @@ pub fn create_branch(name: &str) -> Result<(), String> {
 }
 
 pub fn branches_list() -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("branch");
     let output = git.output().map_err(|e| e.to_string())?;
 
@@ -185,15 +175,11 @@ pub fn branches_list() -> Result<(), String> {
 }
 
 pub fn branch_delete(name: &str) -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("branch").arg("-d").arg(name);
     let output = git.output().map_err(|e| e.to_string())?;
 
@@ -220,15 +206,11 @@ pub fn branch_delete(name: &str) -> Result<(), String> {
 }
 
 pub fn branch_rename(name: &str, new_name: &str) -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("branch").arg("-m").arg(name).arg(new_name);
     let output = git.output().map_err(|e| e.to_string())?;
 
@@ -255,21 +237,48 @@ pub fn branch_rename(name: &str, new_name: &str) -> Result<(), String> {
 }
 
 pub fn branch_switch(name: &str) -> Result<(), String> {
-    let mut git: Command = Command::new("git");
-    let git_exists = git.arg("--version").output().is_ok();
-
-    if !git_exists {
+    if !git_exists() {
         return Err("Git is not installed".to_string());
     }
 
-    git = Command::new("git");
-
+    let mut git = Command::new("git");
     git.arg("checkout").arg(name);
     let output = git.output().map_err(|e| e.to_string())?;
 
     if !output.status.success() {
         return Err(format!(
             "Git branch switch failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        ));
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    if !stdout.is_empty() {
+        println!("{}", stdout);
+    }
+
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    if !stderr.is_empty() {
+        eprintln!("{}", stderr);
+    }
+
+    Ok(())
+}
+
+pub fn merge(branch: &str) -> Result<(), String> {
+    if !git_exists() {
+        return Err("Git is not installed".to_string());
+    }
+
+    let mut git = Command::new("git");
+    git.arg("merge").arg(branch);
+    let output = git.output().map_err(|e| e.to_string())?;
+
+    if !output.status.success() {
+        return Err(format!(
+            "Git merge failed: {}",
             String::from_utf8_lossy(&output.stderr)
         ));
     }

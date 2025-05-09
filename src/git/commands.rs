@@ -15,6 +15,8 @@ pub enum GitCommand {
     Commit(Commit),
     #[clap(name = "branch")]
     Branch(Branch),
+    #[clap(name = "merge")]
+    Merge(Merge),
 }
 
 #[derive(Parser, Debug)]
@@ -83,4 +85,10 @@ pub struct RenameBranch {
 #[derive(Parser, Debug)]
 pub struct SwitchBranch {
     pub name: String,
+}
+
+#[derive(Parser, Debug)]
+pub struct Merge {
+    #[clap(help = "The branch to merge into the current branch")]
+    pub branch: String,
 }
