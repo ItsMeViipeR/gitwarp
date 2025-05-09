@@ -2,6 +2,7 @@ use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[clap(name = "git")]
+#[clap(about = "Manage your git repositories easily")]
 pub struct Gitwarp {
     #[clap(subcommand)]
     pub command: GitCommand,
@@ -10,19 +11,31 @@ pub struct Gitwarp {
 #[derive(Parser, Debug)]
 pub enum GitCommand {
     #[clap(name = "clone")]
+    #[clap(about = "Clone a repository")]
+    #[clap(alias = "cl")]
     Clone(Clone),
     #[clap(name = "commit")]
+    #[clap(about = "Commit changes to the repository")]
+    #[clap(alias = "co")]
     Commit(Commit),
     #[clap(name = "branch")]
+    #[clap(about = "Manage branches in the repository")]
+    #[clap(alias = "br")]
     Branch(Branch),
     #[clap(name = "merge")]
+    #[clap(about = "Merge branches in the repository")]
+    #[clap(alias = "m")]
     Merge(Merge),
     #[clap(name = "pull")]
+    #[clap(about = "Pull changes from the remote repository")]
+    #[clap(alias = "pl")]
+    #[clap(alias = "p")]
     Pull(Pull),
 }
 
 #[derive(Parser, Debug)]
 pub struct Clone {
+    #[clap(help = "The URL of the repository to clone")]
     pub url: String,
 }
 
@@ -55,24 +68,31 @@ pub struct Branch {
 #[derive(Parser, Debug)]
 pub enum BranchCommand {
     #[clap(name = "create")]
+    #[clap(about = "Create a new branch")]
     Create(CreateBranch),
     #[clap(name = "delete")]
+    #[clap(about = "Delete a branch")]
     Delete(DeleteBranch),
     #[clap(name = "rename")]
+    #[clap(about = "Rename a branch")]
     Rename(RenameBranch),
     #[clap(name = "list")]
+    #[clap(about = "List all branches")]
     List,
     #[clap(name = "switch")]
+    #[clap(about = "Switch to a different branch")]
     Switch(SwitchBranch),
 }
 
 #[derive(Parser, Debug)]
 pub struct CreateBranch {
+    #[clap(help = "The name of the branch to create")]
     pub name: String,
 }
 
 #[derive(Parser, Debug)]
 pub struct DeleteBranch {
+    #[clap(help = "The name of the branch to delete")]
     pub name: String,
 }
 
@@ -86,6 +106,7 @@ pub struct RenameBranch {
 
 #[derive(Parser, Debug)]
 pub struct SwitchBranch {
+    #[clap(help = "The name of the branch to switch to")]
     pub name: String,
 }
 
