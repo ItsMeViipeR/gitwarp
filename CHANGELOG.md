@@ -22,6 +22,13 @@ Minor changes in `exec.rs` to add `git_exists()` function and CHANGELOG.md
 
 - `merge` command
 
+## [1.0.0] - 2025-05_09
+
+### Added:
+
+- Fetch & pull command
+
 [0.1.0]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.1.0
 [0.1.1]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.1.1
 [0.2.0]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.2.0
+[1.0.0]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v1.0.0

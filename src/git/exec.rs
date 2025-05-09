@@ -297,3 +297,46 @@ pub fn merge(branch: &str) -> Result<(), String> {
 
     Ok(())
 }
+
+pub fn pull(branch: Option<String>) -> Result<(), String> {
+    if !git_exists() {
+        return Err("Git is not installed".to_string());
+    }
+
+    let mut git = Command::new("git");
+
+    git.arg("fetch");
+
+    git.output().map_err(|e| e.to_string())?;
+
+    git = Command::new("git");
+
+    if let Some(branch) = branch {
+        git.arg("pull").arg("origin").arg(branch);
+    } else {
+        git.arg("pull");
+    }
+
+    let output = git.output().map_err(|e| e.to_string())?;
+
+    if !output.status.success() {
+        return Err(format!(
+            "Git pull failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        ));
+    }
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    if !stdout.is_empty() {
+        println!("{}", stdout);
+    }
+
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    if !stderr.is_empty() {
+        eprintln!("{}", stderr);
+    }
+
+    Ok(())
+}

@@ -55,3 +55,30 @@ gitwarp commit -f file.txt -m "message" -p
 ```
 
 Arguments doesn't have order
+
+## Merging
+
+Gitwarp, doesn't provide an easier way to merge branches
+
+```bash
+gitwarp merge <branch>
+```
+
+It'll merge the specified branch in your current branch.
+
+### Pulling changes
+
+To simplify changes pulling, gitwarp provide an unique command that does 2 things in 1.
+
+Git:
+
+```bash
+git fetch
+git pull [branch]
+```
+
+Gitwarp:
+
+```bash
+gitwarp pull [branch]
+```

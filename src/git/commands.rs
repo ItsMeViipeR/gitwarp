@@ -17,6 +17,8 @@ pub enum GitCommand {
     Branch(Branch),
     #[clap(name = "merge")]
     Merge(Merge),
+    #[clap(name = "pull")]
+    Pull(Pull),
 }
 
 #[derive(Parser, Debug)]
@@ -91,4 +93,16 @@ pub struct SwitchBranch {
 pub struct Merge {
     #[clap(help = "The branch to merge into the current branch")]
     pub branch: String,
+}
+
+#[derive(Parser, Debug)]
+pub struct Pull {
+    #[clap(help = "The branch to pull from")]
+    pub branch: Option<String>,
+    #[clap(
+        long,
+        short,
+        help = "The remote repository to pull from. Defaults to 'origin'"
+    )]
+    pub remote: Option<String>,
 }

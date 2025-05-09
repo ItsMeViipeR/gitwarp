@@ -44,5 +44,9 @@ fn main() {
             eprintln!("Error: {}", e);
             std::process::exit(1);
         }),
+        GitCommand::Pull(p) => pull(p.branch).unwrap_or_else(|e| {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        }),
     }
 }
