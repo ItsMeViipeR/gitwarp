@@ -13,6 +13,8 @@ pub enum GitCommand {
     Clone(Clone),
     #[clap(name = "commit")]
     Commit(Commit),
+    #[clap(name = "branch")]
+    Branch(Branch),
 }
 
 #[derive(Parser, Debug)]
@@ -38,4 +40,47 @@ pub struct Commit {
         help = "The files to add to the commit. If you don't want to add all files, use -f and specify the files to add"
     )]
     pub files: Option<Vec<String>>,
+}
+
+#[derive(Parser, Debug)]
+pub struct Branch {
+    #[clap(subcommand)]
+    pub subcommand: BranchCommand,
+}
+
+#[derive(Parser, Debug)]
+pub enum BranchCommand {
+    #[clap(name = "create")]
+    Create(CreateBranch),
+    #[clap(name = "delete")]
+    Delete(DeleteBranch),
+    #[clap(name = "rename")]
+    Rename(RenameBranch),
+    #[clap(name = "list")]
+    List,
+    #[clap(name = "switch")]
+    Switch(SwitchBranch),
+}
+
+#[derive(Parser, Debug)]
+pub struct CreateBranch {
+    pub name: String,
+}
+
+#[derive(Parser, Debug)]
+pub struct DeleteBranch {
+    pub name: String,
+}
+
+#[derive(Parser, Debug)]
+pub struct RenameBranch {
+    #[clap(help = "The current name of the branch")]
+    pub name: String,
+    #[clap(help = "The new name for the branch")]
+    pub new_name: String,
+}
+
+#[derive(Parser, Debug)]
+pub struct SwitchBranch {
+    pub name: String,
 }
