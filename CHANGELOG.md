@@ -16,5 +16,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Minor changes in `exec.rs` to add `git_exists()` function and CHANGELOG.md
 
+## [0.2.0] - 2025-05-09
+
+### Added:
+
+- `merge` command
+
 [0.1.0]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.1.0
 [0.1.1]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.1.1
+[0.2.0]: https://github.com/ItsMeViipeR/gitwarp/releases/tag/v0.2.0

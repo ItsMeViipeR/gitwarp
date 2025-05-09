@@ -40,5 +40,9 @@ fn main() {
                 std::process::exit(1);
             }),
         },
+        GitCommand::Merge(m) => merge(&m.branch).unwrap_or_else(|e| {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        }),
     }
 }
