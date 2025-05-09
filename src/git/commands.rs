@@ -31,6 +31,7 @@ pub enum GitCommand {
     #[clap(alias = "pl")]
     #[clap(alias = "p")]
     Pull(Pull),
+    Version,
 }
 
 #[derive(Parser, Debug)]
@@ -126,4 +127,10 @@ pub struct Pull {
         help = "The remote repository to pull from. Defaults to 'origin'"
     )]
     pub remote: Option<String>,
+}
+
+#[derive(Parser, Debug)]
+pub struct Version {
+    #[clap(long, short, help = "Show the version of the program")]
+    pub version: bool,
 }

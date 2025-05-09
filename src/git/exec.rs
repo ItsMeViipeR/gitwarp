@@ -340,3 +340,11 @@ pub fn pull(branch: Option<String>) -> Result<(), String> {
 
     Ok(())
 }
+
+pub fn version() -> Result<(), String> {
+    // get crate version from Cargo.toml
+    let version = env!("CARGO_PKG_VERSION");
+    println!("Gitwarp version {}", version);
+
+    Ok(())
+}

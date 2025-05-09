@@ -48,5 +48,9 @@ fn main() {
             eprintln!("Error: {}", e);
             std::process::exit(1);
         }),
+        GitCommand::Version => version().unwrap_or_else(|e| {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        }),
     }
 }
